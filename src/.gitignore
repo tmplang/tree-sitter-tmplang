@@ -1,0 +1,4 @@
+# Ignore genrated files by `tree-sitter generate`
+binding*
+Cargo.toml
+src
