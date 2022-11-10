@@ -2,3 +2,4 @@
 binding*
 Cargo.toml
 src
+package.json
