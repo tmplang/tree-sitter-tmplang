@@ -6,6 +6,7 @@ module.exports = grammar({
     //   | "EOF";
     // Note: There is no need to handle EOF
     source_file: $ => repeat($.Function_Definition),
+
     // Function_Definition =
     //   | Function_Type, Identifier, ":", Param_List, "->", Type, Block
     //   | Function_Type, Identifier, ":", Param_List, Block
@@ -21,16 +22,28 @@ module.exports = grammar({
         $.Block
       )
     ),
+
     // Param_List = Param (",", Param)*;
-    Param_List: $ => seq($.Param,repeat(seq(',', $.Param))),
+    Param_List: $ => seq($.Param, repeat(seq(',', $.Param))),
+
     // Param = Type Identifier;
-    Param: $ => seq($.Type,$.Identifier),
+    Param: $ => seq($.Type, $.Identifier),
+
     //Block = "{" "}";
     Block: $ => seq('{','}'),
+
     // Function_type = "proc" | "fn";
     Function_Type: $ => choice('proc','fn'),
-    // Type = Identifier;
-    Type: $ => $.Identifier,
+
+    // Type = NamedType | TupleType;
+    Type: $ => choice($.NamedType, $.TupleType),
+
+    // NamedType = Identifier;
+    NamedType: $ => $.Identifier,
+
+    // TupleType = "(" (Type ("," Type)*)? ")";
+    TupleType: $ => seq('(', optional(seq($.Type, repeat(seq(',', $.Type)))), ')'),
+
     // Identifier = [a-zA-Z][a-zA-Z0-9]*;
     Identifier: $ => /[a-zA-Z][a-zA-Z0-9]*/
   }
