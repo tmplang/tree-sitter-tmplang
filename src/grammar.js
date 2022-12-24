@@ -30,7 +30,22 @@ module.exports = grammar({
     Param: $ => seq($.Type, $.Identifier),
 
     //Block = "{" "}";
-    Block: $ => seq('{','}'),
+    Block: $ => seq('{', repeat($.ExprStmt), '}'),
+
+    // ExprNumber = [0-9][0-9_]*;
+    ExprNumber: $ => /[0-9][0-9_]*/,
+
+    // ExprRet = "ret" Expr?;
+    ExprRet: $ => seq('ret', optional($.Expr)),
+
+    // ExprTuple = "(" (Expr ("," Expr)*)? ")";
+    ExprTuple: $ => seq('(', optional(seq($.Expr, repeat(seq(',', $.Expr)))), ')'),
+
+    // Expr = ExprNumber | ExprRet | ExprTuple;
+    Expr: $ => choice($.ExprNumber, $.ExprRet, $.ExprTuple),
+
+    // ExprStmt = Expr ";";
+    ExprStmt: $ => seq($.Expr, ';'),
 
     // Function_type = "proc" | "fn";
     Function_Type: $ => choice('proc','fn'),

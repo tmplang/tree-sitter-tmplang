@@ -12,3 +12,10 @@
 
 ## Run highlighting
 `tree-sitter highlight test/example.tmp`
+
+## Installation of highlightings on nvim. Once tree-sitter is installed
+
+### [Adding parsers](https://github.com/nvim-treesitter/nvim-treesitter#adding-parsers)
+
+### [Adding queries](https://github.com/nvim-treesitter/nvim-treesitter#adding-queries)
+TLDR; `cp queries/highlights.scm $XDG_DATA_HOME/nvim/site/vim/site/pack/packer/start/nvim-treesitter/queries/tmplang/`
