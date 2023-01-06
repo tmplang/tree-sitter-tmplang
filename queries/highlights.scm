@@ -19,6 +19,10 @@
 ] @punctuation.bracket
 
 [
-  Function_Type
+  (Function_Type)
   "ret"
 ] @keyword
+
+(Comment) @comment
+
+(ERROR) @error

@@ -1,3 +1,6 @@
+const WHITE_SPACE = choice(" ", "\t", "\v", "\f");
+const NEWLINE = /\r?\n/;
+
 module.exports = grammar({
   name: 'tmplang',
 
@@ -60,6 +63,22 @@ module.exports = grammar({
     TupleType: $ => seq('(', optional(seq($.Type, repeat(seq(',', $.Type)))), ')'),
 
     // Identifier = [a-zA-Z][a-zA-Z0-9]*;
-    Identifier: $ => /[a-zA-Z][a-zA-Z0-9]*/
-  }
+    Identifier: $ => /[a-zA-Z][a-zA-Z0-9]*/,
+
+    // Comment = //.*$;
+    Comment: $ => /\/\/.*/,
+
+    // Newline = \r?\n;
+    Newline: $ => NEWLINE,
+
+    // Whitespace = /[ \t\f\v]/;
+    Whitespace: $ => token(WHITE_SPACE),
+  },
+
+  // Tokens that can appear ANYWHERE in the grammar
+  extras: $ => [
+    $.Comment,
+    $.Newline,
+    $.Whitespace
+  ]
 });
