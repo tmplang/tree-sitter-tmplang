@@ -19,3 +19,5 @@
 
 ### [Adding queries](https://github.com/nvim-treesitter/nvim-treesitter#adding-queries)
 TLDR; `cp queries/highlights.scm $XDG_DATA_HOME/nvim/site/vim/site/pack/packer/start/nvim-treesitter/queries/tmplang/`
+
+### [Troubleshooting](https://github.com/nvim-treesitter/nvim-treesitter/issues/3092)
