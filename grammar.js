@@ -5,10 +5,19 @@ module.exports = grammar({
   name: 'tmplang',
 
   rules: {
-    // S = Function_Definition*
+    // S = ( Function_Definition | DataDecl)*
     //   | "EOF";
     // Note: There is no need to handle EOF
-    source_file: $ => repeat($.Function_Definition),
+    source_file: $ => repeat(choice($.Function_Definition, $.DataDecl)),
+
+    // DataDecl = "data" Identifier "=" DataDeclFieldList ";";
+    DataDecl: $ => seq('data', $.Identifier, seq('=', $.DataDeclFieldList), ';'),
+
+    // DataDeclFieldList = DataDeclField (",", DataDeclField)*;
+    DataDeclFieldList: $ => seq($.DataDeclField, repeat(seq(',', $.DataDeclField))),
+
+    // DataDeclField = Identifier ":" Type;
+    DataDeclField: $ => seq($.Identifier, ':', $.Type),
 
     // Function_Definition =
     //   | Function_Type, Identifier, ":", Param_List, "->", Type, Block

@@ -7,6 +7,7 @@
 
 [
   ","
+  ";"
   ":"
   "->"
 ] @punctuation.delimiter
@@ -16,11 +17,13 @@
   ")"
   "{"
   "}"
+  "="
 ] @punctuation.bracket
 
 [
   (Function_Type)
   "ret"
+  "data"
 ] @keyword
 
 (Comment) @comment
