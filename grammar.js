@@ -47,14 +47,20 @@ module.exports = grammar({
     // ExprNumber = [0-9][0-9_]*;
     ExprNumber: $ => /[0-9][0-9_]*/,
 
+    // ExprVarRef = Identifier;
+    ExprVarRef: $ => $.Identifier,
+
+    // ExprAggregateDataAccess = (ExprAggregateDataAccess | ExprVarRef) "." (Integer | Identifier);
+    ExprAggregateDataAccess: $ => seq(choice($.ExprAggregateDataAccess, $.ExprVarRef), '.', choice($.Identifier, $.ExprNumber)),
+
     // ExprRet = "ret" Expr?;
     ExprRet: $ => seq('ret', optional($.Expr)),
 
     // ExprTuple = "(" (Expr ("," Expr)*)? ")";
     ExprTuple: $ => seq('(', optional(seq($.Expr, repeat(seq(',', $.Expr)))), ')'),
 
-    // Expr = ExprNumber | ExprRet | ExprTuple;
-    Expr: $ => choice($.ExprNumber, $.ExprRet, $.ExprTuple),
+    // Expr = ExprNumber | ExprRet | ExprTuple | ExprAggregateDataAccess;
+    Expr: $ => choice($.ExprNumber, $.ExprRet, $.ExprTuple, $.ExprAggregateDataAccess),
 
     // ExprStmt = Expr ";";
     ExprStmt: $ => seq($.Expr, ';'),
