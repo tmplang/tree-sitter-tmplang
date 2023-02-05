@@ -8,3 +8,9 @@ proc bar: i32 a, (i32, i32) b -> i32 {
 
   ret 1;
 }
+
+proc bar: B b, (i32, i32) tuple -> i32 {
+  tuple.0;
+  tuple.1;
+  ret b.a;
+}
