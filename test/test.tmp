@@ -14,3 +14,14 @@ proc bar: B b, (i32, i32) tuple -> i32 {
   tuple.1;
   ret b.a;
 }
+
+proc foo: (i32, B) a -> i32 {
+  ret match a {
+    (1, a) -> 2,
+    (a, {a: 3}) -> 4,
+    (5, {a: aVal, b: 10}) -> b,
+    (6, b) -> 7,
+    _ -> 8,
+    otherwise -> 9
+  };
+}

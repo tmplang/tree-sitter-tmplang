@@ -1,5 +1,3 @@
-(Function_Type) @keyword
-
 (Type) @type
 (Function_Definition name: (Identifier) @function)
 (Identifier) @variable
@@ -25,6 +23,9 @@
   (Function_Type)
   "ret"
   "data"
+  "match"
+  "otherwise"
+  "_"
 ] @keyword
 
 (Comment) @comment

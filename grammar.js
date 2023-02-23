@@ -53,14 +53,42 @@ module.exports = grammar({
     // ExprAggregateDataAccess = (ExprAggregateDataAccess | ExprVarRef) "." (Integer | Identifier);
     ExprAggregateDataAccess: $ => seq(choice($.ExprAggregateDataAccess, $.ExprVarRef), '.', choice($.Identifier, $.ExprNumber)),
 
+    // MatchExpr = "match" Expr "{" MatchExprCaseList "}";
+    MatchExpr: $ => seq('match', $.Expr, '{', $.MatchExprCaseList, '}'),
+
+    // MatchExprCaseList = MatchExprCase ("," MatchExprCase)*;
+    MatchExprCaseList: $ => seq($.MatchExprCase, repeat(seq(',', $.MatchExprCase))),
+
+    // MatchExprCase = MatchExprCaseLhsValue "->" Expr;
+    MatchExprCase: $ => seq($.MatchExprCaseLhsValue, '->', $.Expr),
+
+    // MatchExprCaseLhsValue = MatchExprCaseLhsValues | "otherwise";
+    MatchExprCaseLhsValue: $ => choice($.MatchExprCaseLhsValues, 'otherwise'),
+
+    // MatchExprCaseLhsValues = TupleDestructuration | DataDestructuration | PlaceholderDecl | "_" | ExprNumber;
+    MatchExprCaseLhsValues: $ => choice($.TupleDestructuration, $.DataDestructuration, $.PlaceholderDecl, '_', $.ExprNumber),
+
+    // PlaceholderDecl = Identifier;
+    PlaceholderDecl: $ => $.Identifier,
+
+    // TupleDestructuration = "(" (TupleDestructurationElem ("," TupleDestructurationElem)*)? ")";
+    TupleDestructuration: $ => seq('(', optional(seq($.TupleDestructurationElem, repeat(seq(',', $.TupleDestructurationElem)))), ')'),
+    // TupleDestructurationElem = MatchExprCaseLhsValues;
+    TupleDestructurationElem: $ => $.MatchExprCaseLhsValues,
+
+    // DataDestructuration = "{" (DataDestructuration ("," TupleDestructurationElem)*)? "}";
+    DataDestructuration: $ => seq('{', optional(seq($.DataDestructurationElem, repeat(seq(',', $.DataDestructurationElem)))), '}'),
+    // DataDestructurationElem = Identifier ":" MatchExprCaseLhsValues;
+    DataDestructurationElem: $ => seq($.Identifier, ':', $.MatchExprCaseLhsValues),
+
     // ExprRet = "ret" Expr?;
     ExprRet: $ => seq('ret', optional($.Expr)),
 
     // ExprTuple = "(" (Expr ("," Expr)*)? ")";
     ExprTuple: $ => seq('(', optional(seq($.Expr, repeat(seq(',', $.Expr)))), ')'),
 
-    // Expr = ExprVarRef | ExprNumber | ExprRet | ExprTuple | ExprAggregateDataAccess;
-    Expr: $ => choice($.ExprVarRef, $.ExprNumber, $.ExprRet, $.ExprTuple, $.ExprAggregateDataAccess),
+    // Expr = ExprVarRef | ExprNumber | ExprRet | ExprTuple | ExprAggregateDataAccess | MatchExpr;
+    Expr: $ => choice($.ExprVarRef, $.ExprNumber, $.ExprRet, $.ExprTuple, $.ExprAggregateDataAccess, $.MatchExpr),
 
     // ExprStmt = Expr ";";
     ExprStmt: $ => seq($.Expr, ';'),
