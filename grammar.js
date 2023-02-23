@@ -59,8 +59,8 @@ module.exports = grammar({
     // ExprTuple = "(" (Expr ("," Expr)*)? ")";
     ExprTuple: $ => seq('(', optional(seq($.Expr, repeat(seq(',', $.Expr)))), ')'),
 
-    // Expr = ExprNumber | ExprRet | ExprTuple | ExprAggregateDataAccess;
-    Expr: $ => choice($.ExprNumber, $.ExprRet, $.ExprTuple, $.ExprAggregateDataAccess),
+    // Expr = ExprVarRef | ExprNumber | ExprRet | ExprTuple | ExprAggregateDataAccess;
+    Expr: $ => choice($.ExprVarRef, $.ExprNumber, $.ExprRet, $.ExprTuple, $.ExprAggregateDataAccess),
 
     // ExprStmt = Expr ";";
     ExprStmt: $ => seq($.Expr, ';'),
