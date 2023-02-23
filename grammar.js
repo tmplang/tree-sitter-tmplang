@@ -66,7 +66,7 @@ module.exports = grammar({
     ExprStmt: $ => seq($.Expr, ';'),
 
     // Function_type = "proc" | "fn";
-    Function_Type: $ => choice('proc','fn'),
+    Function_Type: $ => choice('proc', 'fn'),
 
     // Type = NamedType | TupleType;
     Type: $ => choice($.NamedType, $.TupleType),
